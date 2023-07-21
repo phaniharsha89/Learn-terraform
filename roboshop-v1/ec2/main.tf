@@ -35,7 +35,7 @@ resource "aws_route53_record" "www" {
   name    = "${var.name}-dev"
   type    = "A"
   ttl     = 30
-  records = [aws_instance.www.private_ip]
+  records = [aws_instance.web.private_ip]
 }
 
 resource "aws_security_group" "sg" {
