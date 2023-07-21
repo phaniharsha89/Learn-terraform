@@ -6,11 +6,13 @@ resource "aws_instance" "web" {
   tags = {
     Name = var.name
   }
+
 }
 
 resource "null_resource" "ansible" {
-depends_on= [aws_instance.web, aws_route53_record.www]  
-provisioner "remote-exec" {
+  depends_on = [aws_instance.web, aws_route53_record.www]  
+  provisioner "remote-exec" {
+    
     connection {
     type     = "ssh"
     user     = "centos"
@@ -20,15 +22,12 @@ provisioner "remote-exec" {
       inline = [
       "sudo labauto ansible",
       "ansible-pull -i localhost, -U https://github.com/phaniharsha89/roboshop-ansible main.yml -e env=dev -e role_name=${var.name}"
-       ]
-}
-}
-
-data "aws_ami" "example" {
-  owners         = ["973714476881"]
-  most_recent    = true
-  name_regex     = "Centos-8-DevOps-Practice"
-  }
+      ]
+     }
+    }
+    
+    
+    
 resource "aws_route53_record" "www" {
   zone_id = "Z08003803OC4Y6A8SK8BX"
   name    = "${var.name}-dev"
@@ -37,15 +36,24 @@ resource "aws_route53_record" "www" {
   records = [aws_instance.web.private_ip]
 }
 
+
+
+
+data "aws_ami" "example" {
+  owners         = ["973714476881"]
+  most_recent    = true
+  name_regex     = "Centos-8-DevOps-Practice"
+  }
+
+
 resource "aws_security_group" "sg" {
   name = var.name
   description = "Allow TLS inbound traffic"
 
   ingress {
-    description = "TLS from VPC"
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
 
