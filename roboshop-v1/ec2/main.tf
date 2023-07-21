@@ -1,6 +1,6 @@
 resource "aws_instance" "web" {
-  ami = data.aws_ami.example.id
-  instance_type = "t3.small"
+  ami                    = data.aws_ami.example.id
+  instance_type          = "t3.small"
   vpc_security_group_ids = [aws_security_group.sg.id]
 
   tags = {
@@ -25,11 +25,10 @@ provisioner "remote-exec" {
 }
 
 data "aws_ami" "example" {
-  most_recent = true
-  owners = ["192494896405"]
-  name_regex = "Centos-8-DevOps-Practice"
-}
-
+  owners         = ["973714476881"]
+  most_recent    = true
+  name_regex     = "Centos-8-DevOps-Practice"
+  }
 resource "aws_route53_record" "www" {
   zone_id = "Z08003803OC4Y6A8SK8BX"
   name    = "${var.name}-dev"
