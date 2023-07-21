@@ -26,7 +26,7 @@ provisioner "remote-exec" {
 
 data "aws_ami" "example" {
   most_recent = true
-  owners = ["08ee87f57b38db5af"]
+  owners = ["192494896405"]
   name_regex = "Centos-8-DevOps-Practice"
 }
 
